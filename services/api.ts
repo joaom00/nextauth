@@ -1,6 +1,6 @@
-import { rejects } from "assert";
-import axios, { Axios, AxiosError } from "axios";
-import { parseCookies, setCookie } from "nookies";
+import Router from "next/router";
+import axios, { AxiosError } from "axios";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
 
 let cookies = parseCookies();
 let isRefreshing = false;
@@ -74,7 +74,12 @@ api.interceptors.response.use(
           });
         });
       } else {
+        destroyCookie(undefined, "nextauth.token");
+        destroyCookie(undefined, "nextauth.refreshToken");
+        Router.push("/");
       }
     }
+
+    return Promise.reject(error);
   }
 );
