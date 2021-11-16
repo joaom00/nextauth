@@ -1,18 +1,18 @@
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { useCan } from "../hooks/useCan";
 import { withSSRAuth } from "../utils/withSSRAuth";
+import { Can } from "../components/Can";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
-
-  const userCanSeeMetrics = useCan({ permissions: ["metrics.list"] });
 
   return (
     <>
       <h1>Dashboard: {user?.email}</h1>
 
-      {userCanSeeMetrics && <div>Métricas</div>}
+      <Can permissions={["metrics.list"]}>
+        <div>Métricas</div>
+      </Can>
     </>
   );
 }
